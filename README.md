@@ -347,7 +347,7 @@ REPLICATE_TEXT_TO_VIDEO_MODEL=openai/text-to-video
 - **Database Indexing** - Optimized query performance
 - **Connection Pooling** - Efficient resource management
 
-## 🔐 Security
+## 🔒 Security
 
 - JWT-based authentication
 - Password hashing
@@ -390,9 +390,9 @@ MIT License - See LICENSE file for details
 
 Made with ❤️ by [Elhawy](https://github.com/elhawy0)
 
-## 📧 Support
+## 🆘 Support
 
-For issues, questions, and support contact: **bebom0736@gmail.com**
+For issues and questions, please open a GitHub issue or contact support.
 
 ---
 
