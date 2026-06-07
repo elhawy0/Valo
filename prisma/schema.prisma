@@ -1,0 +1,55 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String     @id @default(cuid())
+  email     String     @unique
+  password  String
+  name      String?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  videos    VideoJob[]
+  @@map("users")
+}
+
+model VideoJob {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type            VideoType
+  textPrompt      String?
+  imageUrl        String?
+  imageUrls       String[]
+  style           String?
+  videoUrl        String?
+  status          JobStatus @default(PENDING)
+  progress        Int       @default(0)
+  errorMessage    String?
+  replicateTaskId String?   @unique
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  completedAt     DateTime?
+  @@index([userId])
+  @@index([status])
+  @@map("video_jobs")
+}
+
+enum VideoType {
+  TEXT_TO_VIDEO
+  IMAGE_TO_VIDEO
+  MULTIPLE_IMAGES_TO_VIDEO
+}
+
+enum JobStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+  CANCELLED
+}

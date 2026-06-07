@@ -1,0 +1,43 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: valo_user
+      POSTGRES_PASSWORD: valo_password
+      POSTGRES_DB: valo_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - valo-network
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - valo-network
+  app:
+    build: .
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DATABASE_URL: postgresql://valo_user:valo_password@postgres:5432/valo_db
+      REDIS_URL: redis://redis:6379
+      REPLICATE_API_TOKEN: ${REPLICATE_API_TOKEN}
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - valo-network
+volumes:
+  postgres_data:
+  redis_data:
+networks:
+  valo-network:
+    driver: bridge
